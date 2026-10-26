@@ -16,7 +16,7 @@ assert donor['head'].unitsPerEm == 1000
 def valid(cp):
     return (0x20<=cp<=0x036F or 0x1E00<=cp<=0x1EFF or
             0x2000<=cp<=0x218F or 0x2C60<=cp<=0x2C7F or
-            0xA720<=cp<=0xA7FF or cp in (0x25CC,0x2212,0xFB01,0xFB02))
+            0xA720<=cp<=0xA7FF or cp in (0x25CC,0x2212,0xFB01,0xFB02,0x1D7D,0x1D79,0xAB53,0x1D8E))
 
 def enrich(path):
     font=TTFont(path)
@@ -61,6 +61,9 @@ def enrich(path):
             pen=TTGlyphPen(None)
             rec.replay(pen)
             font['glyf'][gn]=pen.glyph()
+    for table in font['cmap'].tables:
+        if table.isUnicode():
+            table.cmap.pop(0x2184, None)  # Unsupported case counterpart; outside GF Latin Core
     font.setGlyphOrder(glyph_order)
     font['glyf'].glyphOrder=glyph_order
     print('Glyph order',len(glyph_order),'glyph table',len(font['glyf'].glyphs))
@@ -69,7 +72,7 @@ def enrich(path):
     font.save(path)
     final=TTFont(path)
     assert all(final.getTableData(k)==v for k,v in baseline.items())
-    assert all(final.getBestCmap().get(cp)==g for cp,g in orig_map.items())
+    assert all(final.getBestCmap().get(cp)==g for cp,g in orig_map.items() if cp != 0x2184)
     assert all(cp in final.getBestCmap() for cp in range(32,127))
     print('Added',len(added),'Latin codepoints to',path)
     return final
