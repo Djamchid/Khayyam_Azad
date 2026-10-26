@@ -6,6 +6,7 @@ on:
       - 'fonts/**'
       - 'source/fix_googlefonts.py'
       - 'source/add_latin.py'
+      - 'source/add_latin_marks.py'
       - 'OFL.txt'
       - 'PROVENANCE.md'
       - '.github/workflows/googlefonts-qa.yml'
