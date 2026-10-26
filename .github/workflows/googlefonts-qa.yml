@@ -1,4 +1,4 @@
-name: Google Fonts qualification
+name: Google Fonts qualification — release
 on:
   workflow_dispatch:
   push:
