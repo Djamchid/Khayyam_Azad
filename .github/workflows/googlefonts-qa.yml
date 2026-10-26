@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'fonts/**'
-      - 'source/normalize_metadata.py'
+      - 'source/fix_googlefonts.py'
       - '.github/workflows/googlefonts-qa.yml'
 jobs:
   qa:
@@ -21,7 +21,7 @@ jobs:
           mkdir -p /tmp/khayyam-qa
           cp fonts/KhayyamAzad-Regular.ttf /tmp/khayyam-qa/
           cp fonts/KhayyamAzad-Regular.woff2 /tmp/khayyam-qa/
-          python source/normalize_metadata.py
+          python source/fix_googlefonts.py
       - name: Check script and cmap
         run: |
           python - <<'PY'
