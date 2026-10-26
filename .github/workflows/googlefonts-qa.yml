@@ -5,6 +5,7 @@ on:
     paths:
       - 'fonts/**'
       - 'source/fix_googlefonts.py'
+      - 'source/add_latin.py'
       - '.github/workflows/googlefonts-qa.yml'
 jobs:
   qa:
