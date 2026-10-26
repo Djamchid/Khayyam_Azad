@@ -38,7 +38,7 @@ jobs:
         continue-on-error: false
         run: |
           set +e
-          fontbakery check-googlefonts fonts/KhayyamAzad-Regular.ttf --no-colors --succinct > fontbakery-report.txt 2>&1
+          fontbakery check-googlefonts fonts/KhayyamAzad-Regular.ttf --no-colors > fontbakery-report.txt 2>&1
           rc=$?
           echo "FontBakery exit code: $rc"
           cat fontbakery-report.txt
