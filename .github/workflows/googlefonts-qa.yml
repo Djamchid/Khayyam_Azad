@@ -35,12 +35,13 @@ jobs:
           assert 'GSUB' in f and 'GPOS' in f
           PY
       - name: FontBakery Google Fonts profile
-        continue-on-error: true
+        continue-on-error: false
         run: |
+          set +e
           fontbakery check-googlefonts fonts/KhayyamAzad-Regular.ttf --no-colors --succinct > fontbakery-report.txt 2>&1
           rc=$?
           echo "FontBakery exit code: $rc"
-          tail -100 fontbakery-report.txt
+          cat fontbakery-report.txt
           exit "$rc"
       - uses: actions/upload-artifact@v4
         if: always()
