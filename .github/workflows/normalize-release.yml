@@ -17,9 +17,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install fonttools brotli
-      - run: python source/fix_googlefonts.py
-      - run: python source/add_latin.py
-      - run: python source/add_latin_marks.py
+      - run: python source/build.py
+      - run: cp build/KhayyamAzad-Regular.ttf build/KhayyamAzad-Regular.woff2 fonts/
         # Complete Latin case mapping for the Core subset
         # Flatten imported Latin composites and complete combining accents
         # Use a separate mutable glyph-order list in the merge
