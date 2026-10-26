@@ -1,0 +1,51 @@
+name: Google Fonts qualification
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'fonts/**'
+      - 'source/normalize_metadata.py'
+      - '.github/workflows/googlefonts-qa.yml'
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install FontBakery
+        run: python -m pip install 'fontbakery[googlefonts]' fonttools brotli
+      - name: Normalize metadata on copies
+        run: |
+          mkdir -p /tmp/khayyam-qa
+          cp fonts/KhayyamAzad-Regular.ttf /tmp/khayyam-qa/
+          cp fonts/KhayyamAzad-Regular.woff2 /tmp/khayyam-qa/
+          python source/normalize_metadata.py
+      - name: Check script and cmap
+        run: |
+          python - <<'PY'
+          from fontTools.ttLib import TTFont
+          f=TTFont('fonts/KhayyamAzad-Regular.ttf')
+          chars=set(f.getBestCmap())
+          missing=[f'U+{i:04X}' for i in range(32,127) if i not in chars]
+          print('ASCII missing', len(missing), 'of 95:', ' '.join(missing))
+          with open('coverage-report.txt','w') as w:
+              w.write('Missing ASCII ('+str(len(missing))+'/95): '+', '.join(missing)+'\n')
+          assert 'GSUB' in f and 'GPOS' in f
+          PY
+      - name: FontBakery Google Fonts profile
+        continue-on-error: true
+        run: |
+          fontbakery check-googlefonts fonts/KhayyamAzad-Regular.ttf --no-colors --succinct > fontbakery-report.txt 2>&1
+          rc=$?
+          echo "FontBakery exit code: $rc"
+          tail -100 fontbakery-report.txt
+          exit "$rc"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: googlefonts-qa-report
+          path: |
+            fontbakery-report.txt
+            coverage-report.txt
