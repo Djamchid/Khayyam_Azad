@@ -1,6 +1,8 @@
 """Add GF Latin Core characters from Noto Sans (SIL OFL 1.1) without changing Persian glyphs."""
 from fontTools.ttLib import TTFont
 from copy import deepcopy
+from fontTools.pens.recordingPen import DecomposingRecordingPen
+from fontTools.pens.ttGlyphPen import TTGlyphPen
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -12,7 +14,7 @@ donor = TTFont(TMP)
 assert donor['head'].unitsPerEm == 1000
 
 def valid(cp):
-    return (0x20<=cp<=0x024F or 0x1E00<=cp<=0x1EFF or
+    return (0x20<=cp<=0x036F or 0x1E00<=cp<=0x1EFF or
             0x2000<=cp<=0x218F or 0x2C60<=cp<=0x2C7F or
             0xA720<=cp<=0xA7FF or cp in (0x25CC,0x2212,0xFB01,0xFB02))
 
@@ -50,6 +52,15 @@ def enrich(path):
         if table.isUnicode():
             table.cmap.update({cp:g for cp,g in added.items()
                                if cp<=0xFFFF or table.format in (12,13)})
+    # Flatten imported Latin composites (no nested component chains).
+    glyphset=font.getGlyphSet()
+    for gn in glyph_order:
+        if gn.startswith('kaLatin_') and font['glyf'][gn].isComposite():
+            rec=DecomposingRecordingPen(glyphset)
+            glyphset[gn].draw(rec)
+            pen=TTGlyphPen(None)
+            rec.replay(pen)
+            font['glyf'][gn]=pen.glyph()
     font.setGlyphOrder(glyph_order)
     font['glyf'].glyphOrder=glyph_order
     print('Glyph order',len(glyph_order),'glyph table',len(font['glyf'].glyphs))
