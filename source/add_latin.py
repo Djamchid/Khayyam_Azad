@@ -51,6 +51,9 @@ def enrich(path):
             table.cmap.update({cp:g for cp,g in added.items()
                                if cp<=0xFFFF or table.format in (12,13)})
     font.setGlyphOrder(glyph_order)
+    font['glyf'].glyphOrder=glyph_order
+    print('Glyph order',len(glyph_order),'glyph table',len(font['glyf'].glyphs))
+    assert len(glyph_order)==len(font['glyf'].glyphs), 'Glyph order mismatch'
     font['maxp'].numGlyphs=len(glyph_order)
     font.save(path)
     final=TTFont(path)
