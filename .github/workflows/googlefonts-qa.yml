@@ -6,6 +6,7 @@ on:
       - 'fonts/**'
       - 'source/fix_googlefonts.py'
       - 'source/add_latin.py'
+      - 'OFL.txt'
       - '.github/workflows/googlefonts-qa.yml'
 jobs:
   qa:
