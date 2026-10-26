@@ -19,7 +19,6 @@ with TemporaryDirectory() as tmp:
     font.save(d/'fonts/KhayyamAzad-Regular.woff2')
     run([sys.executable,str(root/'source/fix_googlefonts.py')],cwd=d,check=True)
     run([sys.executable,str(root/'source/add_latin.py')],cwd=d,check=True)
-    run([sys.executable,str(root/'source/add_latin_marks.py')],cwd=d,check=True)
     for name in ('KhayyamAzad-Regular.ttf','KhayyamAzad-Regular.woff2'):
         copy2(d/'fonts'/name,out/name)
         print('Built',out/name)
