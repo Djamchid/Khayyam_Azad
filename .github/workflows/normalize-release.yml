@@ -19,6 +19,7 @@ jobs:
       - run: python -m pip install fonttools brotli
       - run: python source/fix_googlefonts.py
       - run: python source/add_latin.py
+        # Use a separate mutable glyph-order list in the merge
         # Latin glyph imports are checked against the Persian GSUB/GPOS tables
       - name: Commit corrected binaries if changed
         run: |
