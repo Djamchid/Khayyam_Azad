@@ -1,13 +1,6 @@
+Copyright 2026 The Khayyam Azad Project Authors (https://github.com/Djamchid/Khayyam_Azad)
 Copyright 2017 Google Inc. All Rights Reserved.
-Original font: Noto Nastaliq Urdu, distributed under SIL Open Font License 1.1.
-Khayyam Azad Preview v0.1 modifications (new name and ornamental glyphs), 2026.
 
-The Preview is a modified derivative of Noto Nastaliq Urdu, NOT of IranNastaliq.
-
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-https://openfontlicense.org/open-font-license-official-text/
-
------------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 -----------------------------------------------------------
 PREAMBLE
