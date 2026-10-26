@@ -21,7 +21,7 @@ def enrich(path):
     assert font['head'].unitsPerEm == donor['head'].unitsPerEm
     # Binary-equality check of the Persian features and original cmap mappings.
     baseline={k:font.getTableData(k) for k in ('GSUB','GPOS','GDEF')}
-    glyph_order=font.getGlyphOrder()
+    glyph_order=list(font.getGlyphOrder())
     orig_map=dict(font.getBestCmap())
     existing=set(glyph_order)
     cache={}
