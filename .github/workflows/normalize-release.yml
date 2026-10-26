@@ -1,0 +1,29 @@
+name: Normalize released font metadata
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/normalize-release.yml'
+permissions:
+  contents: write
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install fonttools brotli
+      - run: python source/normalize_metadata.py
+      - name: Commit corrected binaries if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fonts/KhayyamAzad-Regular.ttf fonts/KhayyamAzad-Regular.woff2
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: normalize font metadata without modifying outlines or shaping"
+            git push
+          fi
