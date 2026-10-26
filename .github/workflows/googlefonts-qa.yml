@@ -7,6 +7,7 @@ on:
       - 'source/fix_googlefonts.py'
       - 'source/add_latin.py'
       - 'OFL.txt'
+      - 'PROVENANCE.md'
       - '.github/workflows/googlefonts-qa.yml'
 jobs:
   qa:
